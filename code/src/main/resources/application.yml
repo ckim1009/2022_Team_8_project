@@ -1,0 +1,45 @@
+server:
+  port: 5501
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  error: 
+   include-exception: true # 오류 응답에 exception의 내용을 포함할지 여부
+   include-stacktrace: always # 오류 응답에 stacktrace 내용을 포함할 지 여부
+  
+
+spring:
+  freemarker:
+    checkTemplateLocation: false
+
+  servlet:
+    multipart:
+      max-file-size: 50MB
+        
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/baronarin?serverTimezone=Asia/Seoul
+    username: cos
+    password: cos1234
+
+ # profiles: dev  -jar class_name.jar
+          
+
+  jpa:
+    hibernate:
+      ddl-auto: update #create update none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    
+
+       
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+      static-path-pattern: /resources/** 
