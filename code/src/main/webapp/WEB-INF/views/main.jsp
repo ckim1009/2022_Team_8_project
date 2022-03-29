@@ -119,6 +119,20 @@
 		$('#progress_btn').toggleClass('btn-warning');
 	}
 	
+	
+	function download_file()
+	{
+		var result_title = document.getElementById('result_title');
+		var result_body = document.getElementById('result_body');
+		var down_title = document.getElementById('down_title');
+		var down_body = document.getElementById('down_body');
+		
+		down_title.value=result_title.innerText;
+		down_body.value=result_body.innerText;
+		
+		$('#download_submit').submit();
+	}
+	
 </script>
 
 <body>
@@ -250,7 +264,11 @@
 	                <div class="btn btn-secondary " onclick="location.reload()">취소</div>
                 </div>
             </div>
-
+            
+            <form method="post" action="/download" id="download_submit">
+           		<input type="hidden" name ="title" id="down_title">
+				<input type="hidden" name="body" id="down_body">
+            </form>
             
         </div>
     </div>
