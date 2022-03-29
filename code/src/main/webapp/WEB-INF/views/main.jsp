@@ -9,7 +9,117 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>바로요약(Beta)</title>
-</head>  
+    
+</head>
+
+<script>
+    function text_upload()
+    {
+    	var textbody = document.getElementById("textbody").value
+    	var paper_compressed = document.getElementById('paper_compressed');
+		var result_title = document.getElementById('result_title');
+		var result_body = document.getElementById('result_body');
+		var progress_btn = document.getElementById('progress_btn');
+		var text_layer = document.getElementById('text_layer');
+		
+    	$.ajax({
+			type : 'POST',
+			url: "/text_upload",
+			data: {"textbody":textbody},
+			success: function(res){
+
+				progress_btn.innerText = "완료";
+				result_title.innerText = res.title;
+				result_body.innerText = res.body;
+				paper_compressed.style.display = 'block';
+				$('#progress_btn').toggleClass('btn-warning');
+				$('#progress_btn').toggleClass('btn-secondary');
+				text_layer.style.display = "none";
+			},
+			error: function(err){
+				alert(err)
+				console.log(err)
+			}
+			});
+			
+		progress_btn.innerText = "처리중";
+		$('#progress_btn').toggleClass('btn-secondary');
+		$('#progress_btn').toggleClass('btn-warning');
+    }
+    
+
+
+	function btn_upload()
+	{
+		const upload_file = document.getElementById('upload_file');
+		var progress_btn = document.getElementById('progress_btn');
+		upload_file.click();
+
+		//upload_file.addEventListener('change',(event)=>{
+		//	const fileList = event.target.files;
+		//	console.log(fileList[0]);
+		//})
+	}
+	
+	function btn_upload_change()
+	{
+		if(document.getElementById("upload_file").value)
+		{
+			var uploadfile = $('#upload_file')[0].files[0];
+			upload_file(uploadfile)
+		}
+	}
+	
+	function upload_file(uploadfile)
+	{
+		var progress_btn = document.getElementById('progress_btn');
+		
+		var pdf_layer = document.getElementById('pdf_layer');
+		pdf_layer.style.display = "none";
+		
+		
+		var formData = new FormData();
+		formData.append("file", uploadfile);
+
+		if(!uploadfile.name.includes(".pdf"))
+		{
+			alert("pdf형식의 문서만 업로드 가능합니다.")
+			return false;
+		}
+		
+		var paper_compressed = document.getElementById('paper_compressed');
+		var result_title = document.getElementById('result_title');
+		var result_body = document.getElementById('result_body');
+		
+        $.ajax({
+			type : 'POST',
+			url: "/pdf_upload",
+			data: formData,
+			 dataType: "json",
+			enctype: 'multipart/form-data',
+			processData:false,
+			contentType:false,
+			
+			success: function(res){
+
+				progress_btn.innerText = "완료";
+				result_title.innerText = res.title;
+				result_body.innerText = res.body;
+				paper_compressed.style.display = 'block';
+				$('#progress_btn').toggleClass('btn-warning');
+				$('#progress_btn').toggleClass('btn-secondary');
+			},
+			error: function(err){
+				alert(err)
+			}
+			});
+			
+		progress_btn.innerText = "처리중";
+		$('#progress_btn').toggleClass('btn-secondary');
+		$('#progress_btn').toggleClass('btn-warning');
+	}
+	
+</script>
 
 <body>
 
@@ -64,6 +174,40 @@
 		
 		</div>
 
+		<script>
+		function file_drag_drop()
+		{
+			var file_box = $('#file_box')
+			file_box.on('dragenter',function(e){
+				e.stopPropagation()
+				e.preventDefault()
+			})
+			file_box.on('dragleave',function(e){
+				e.stopPropagation()
+				e.preventDefault()
+			})
+			file_box.on('dragover',function(e){
+				e.stopPropagation()
+				e.preventDefault()
+			})
+			
+			file_box.on('drop',function(e){
+				e.preventDefault()
+				console.log('drop')
+				var files = e.originalEvent.dataTransfer.files;
+	            if(files != null){
+	                if(files.length < 1){
+	                    return;
+	                }
+	                upload_file(files[0])
+	            }else{
+	                alert("파일이 업로드 되지 않았습니다.");
+	            }
+				
+			})
+		}
+		</script>
+
 		<div id="pdf_layer" style="display: none;">
 			<div class="row d-flex justify-content-center py-5 mx-2">
 				<div class="col-12 col-md-6 col-lg-5 py-5" style="border:4px dashed #000000;" id="file_box">
@@ -74,8 +218,24 @@
 			</div>
 			
 		</div>
-				
-		<div class="row flex-row justify-content-center">
+		
+		<script>
+			function text_layer_open(){
+				var first_layer = document.getElementById('first_layer');
+				var text_layer = document.getElementById('text_layer');
+				first_layer.style.display = 'none';
+				text_layer.style.display = 'block';
+			}
+			function pdf_layer_open(){
+				var first_layer = document.getElementById('first_layer');
+				var pdf_layer = document.getElementById('pdf_layer');
+				first_layer.style.display = 'none';
+				pdf_layer.style.display = 'block';
+				file_drag_drop()
+			}
+		</script>
+		
+        <div class="row flex-row justify-content-center">
             <div class="col-12 col-md-6 col-lg-5 mt-2" style="display:none" id="paper_compressed">
 
                 
@@ -90,11 +250,7 @@
 	                <div class="btn btn-secondary " onclick="location.reload()">취소</div>
                 </div>
             </div>
-            
-            <form method="post" action="/download" id="download_submit">
-           		<input type="hidden" name ="title" id="down_title">
-				<input type="hidden" name="body" id="down_body">
-            </form>
+
             
         </div>
     </div>
