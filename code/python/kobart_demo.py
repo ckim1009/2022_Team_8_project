@@ -30,12 +30,12 @@ while i<1:
     i=i+1
 
 
-#temp = os.path.isfile(sys.argv[1])
-temp = os.path.isfile('test.txt')
+temp = os.path.isfile(sys.argv[1])
+#temp = os.path.isfile('test.txt')
 if temp :
 
-    #f = open(sys.argv[1],"r", encoding='UTF8')
-    f = open('test.txt',"r", encoding='UTF8')
+    f = open(sys.argv[1],"r", encoding='UTF8')
+    #f = open('test.txt',"r", encoding='UTF8')
     line = f.read();
     special = re.compile(r'[^ A-Za-z0-9ㄱ-ㅎ가-힣,.\`\~\"\'\:\;\?\!@#\$%\^\&\*\-\+()\[\]\{\}+]')
     text = special.sub(' ',line)
