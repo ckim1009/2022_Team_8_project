@@ -135,7 +135,7 @@ public class MainController {
 	@PostMapping("/download")
 	public void download(String title, String body, HttpServletResponse response){
 		//System.out.println("body : "+body);
-		File file = fileService.String_to_File(title, body);
+		File file = fileService.makePDFFile(title, body);
 		downloadService.downloadResult(title, body, response, file);
 	}
 
