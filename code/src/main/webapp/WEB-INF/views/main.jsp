@@ -12,7 +12,11 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700&display=swap" rel="stylesheet">
 	<style type="text/css">
-		body { font-family: 'Noto Sans KR', sans-serif; }
+		body { font-family: 'Noto Sans KR', sans-serif; background-color: #f1f3f5; }
+		.result_block {
+			background-color: #4040FF;
+			border-radius: 30px;
+		}
 	</style>
 	
 	<title>바로요약(Beta)</title>
@@ -140,7 +144,7 @@
 <body>
 
     <div class="container-fluid px-0">
-        <div class="row d-flex justify-content-center">
+        <div class="row d-flex justify-content-center" style="background-color: white;">
             <div class="col-12 col-md-10 col-lg-10 mt-2 mx-0 px-4">
                 <div class="d-flex flex-row justify-content-between align-items-center px-0">
                     <img src="/img/bi-08.png" alt="로고" onclick="location.reload()">
@@ -157,7 +161,7 @@
         </div>
 		<div id="first_layer">
 			<div class="row d-flex justify-content-center mx-2">
-				<div class="col-12 col-md-10 col-lg-10 mt-5 py-5" style="border: 4px dashed #000000">
+				<div class="col-12 col-md-10 col-lg-10 mt-5 py-5" style="border: 4px dashed #000000;background-color: white;">
 					<div class="d-flex flex-col justify-content-center align-items-center py-1">
 						<p class="my-0">요약 문서의 업로드 방식을</p>
 					</div>
@@ -176,7 +180,7 @@
 		</div>
 
 		<div id="text_layer" style="display: none;" >
-			<div class="row d-flex justify-content-center mx-2" >
+			<div class="row d-flex justify-content-center mx-2">
 				<div class="col-12 col-md-10 col-lg-10 mt-0 py-3 px-2">
 					<p class="text-center">텍스트를 입력하시고 업로드 버튼을 클릭해주세요.</p>
 					<textarea class="w-100" rows="10" id="textbody"></textarea>
@@ -227,7 +231,7 @@
 
 		<div id="pdf_layer" style="display: none;">
 			<div class="row d-flex justify-content-center py-2 mx-2">
-				<div class="col-12 col-md-10 col-lg-10 py-3" style="border:4px dashed #000000;" id="file_box">
+				<div class="col-12 col-md-10 col-lg-10 py-3" style="border:4px dashed #000000;background-color: white;" id="file_box">
 				  <p class="d-flex justify-content-center">파일을 드래그 해서 넣어주시거나</p>
 				  <p class="d-flex justify-content-center">아래 버튼을 클릭해서 파일을 선택해주세요.</p>
 				  <div class="d-flex justify-content-center"><img src="/img/uploadBtn.png" alt="" class="col-2" onclick="btn_upload()"/></div>
@@ -236,7 +240,7 @@
 			
 		</div>
 
-		<div id="loading_layer" style="display: none;">
+		<div id="loading_layer" style="display: none;" >
 			<div class="my-5">
 				<div class="col-8 col-md-6 col-lg-4 mx-auto">
 					<img style="width:100%" src="/img/loading.gif" alt="loading..." >
@@ -266,17 +270,17 @@
 		</script>
 		
         <div class="row flex-row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-10 mt-2" style="display: none;" id="paper_compressed">
-					<p class="px-3 mt-3 text-center text-lg">원문</p>
+            <div class="col-12 col-md-10 col-lg-10 pt-2" style="display: none;" id="paper_compressed">
+					<p class="px-3 py-1 mt-3 mx-4 text-center text-lg result_block text-white">원문</p>
 					<div class="border border-dark mx-3 px-1 rounded-2 mb-5" id="original_body"
-							style="min-height:150px; max-height:400px; overflow-x :hidden; overflow-y :scroll; font-size:12px;">
+							style="min-height:150px; max-height:400px; overflow-x :hidden; overflow-y :scroll; font-size:12px;background-color: white;">
 					</div>
                 
-	                <p class="px-3 text-center text-lg mt-3">요약문</p>
+	                <p class="px-3 py-1 text-center mx-4 text-lg mt-3 result_block text-white">요약문</p>
 	                <div class="border border-dark mx-3 mb-2 px-1 rounded-2" id="result_title"
-	                        style="min-height:30px; max-height:70px; font-size:14px;"></div>
-	                <div class="border border-dark mx-3 px-1 rounded-2 mb-1" id="result_body"
-	                        style="min-height:150px; max-height:400px; overflow-x :hidden; overflow-y :scroll; font-size:12px;">
+	                        style="min-height:30px; max-height:70px; font-size:14px;background-color: white;"></div>
+	                <div class="border border-dark mx-3 px-1 rounded-2 mb-3" id="result_body"
+	                        style="min-height:150px; max-height:400px; overflow-x :hidden; overflow-y :scroll; font-size:12px;background-color: white;">
 	                </div>
             	<div class="d-flex justify-content-center mx-3 mb-5">
 	                <div class="btn btn-primary me-2" onclick="download_file()">다운로드</div>
