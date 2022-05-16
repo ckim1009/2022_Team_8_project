@@ -271,14 +271,16 @@
 		
         <div class="row flex-row justify-content-center">
             <div class="col-12 col-md-10 col-lg-10 pt-2" style="display: none;" id="paper_compressed">
-					<p class="px-3 py-1 mt-3 mx-4 text-center text-lg result_block text-white">원문</p>
+					<p class="px-3 py-1 mt-3 mx-4 text-center text-lg result_block text-white">제목</p>
+					<div class="border border-dark mx-3 mb-2 px-1 rounded-2 text-center text-lg mb-5" id="result_title"
+	                       				 style="min-height:30px; max-height:70px; font-size:14px;background-color: white;"></div>
+					<p class="px-3 py-1 mt-3 mx-4 text-center text-lg result_block text-white">1차 전처리문</p>
 					<div class="border border-dark mx-3 px-1 rounded-2 mb-5" id="original_body"
 							style="min-height:150px; max-height:400px; overflow-x :hidden; overflow-y :scroll; font-size:12px;background-color: white;">
 					</div>
                 
-	                <p class="px-3 py-1 text-center mx-4 text-lg mt-3 result_block text-white">요약문</p>
-	                <div class="border border-dark mx-3 mb-2 px-1 rounded-2" id="result_title"
-	                        style="min-height:30px; max-height:70px; font-size:14px;background-color: white;"></div>
+	                <p class="px-3 py-1 text-center mx-4 text-lg mt-3 result_block text-white">최종 요약문</p>
+	                
 	                <div class="border border-dark mx-3 px-1 rounded-2 mb-3" id="result_body"
 	                        style="min-height:150px; max-height:400px; overflow-x :hidden; overflow-y :scroll; font-size:12px;background-color: white;">
 	                </div>
