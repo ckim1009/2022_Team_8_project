@@ -29,7 +29,7 @@ public class PythonService {
 		command[2] = text.getAbsolutePath();
 
 
-		String result = "요약결과 : ";
+		String result = "";
 		try {
 			CommandLine commandLine = CommandLine.parse(command[0]);
 	        for (int i = 1, n = command.length; i < n; i++) {

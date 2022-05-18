@@ -38,7 +38,7 @@ public class MainController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value = { "/pdf_upload" }, consumes = { "multipart/form-data" })
+	@GetMapping(value = { "/pdf_upload" }, consumes = { "multipart/form-data" })
 	public JSONObject upload(@RequestParam(value="file", required=true) MultipartFile file) throws IOException
 	{
 		String filename = file.getOriginalFilename();
@@ -77,7 +77,7 @@ public class MainController {
 		
 		//파이썬 실행, 요약 텍스트 받아옴
 		text = pythonService.execApachePy(textfile);
-		
+		String temptext = text;
 		textfile.delete();
 		
 		
@@ -85,6 +85,7 @@ public class MainController {
 		HashMap<String,String> mymap = new HashMap<String,String>();
 		mymap.put("title", filename.substring(0, filename.indexOf(".pdf"))+"의 요약본");
 		mymap.put("body", text);
+		mymap.put("tempbody", temptext);
 		JSONObject data = new JSONObject(mymap);
 		
 
@@ -93,7 +94,7 @@ public class MainController {
 	
 	//텍스트 입력
 	@ResponseBody
-	@PostMapping(value = { "/text_upload" })
+	@GetMapping(value = { "/text_upload" })
 	public JSONObject text_upload(String textbody) throws IOException
 	{
 		System.out.println(textbody);
@@ -118,7 +119,7 @@ public class MainController {
 		
 		//파이썬 실행, 요약 텍스트 받아옴
 		String text = pythonService.execApachePy(textfile);
-		
+		String temptext = text;
 		textfile.delete();
 		
 		
@@ -126,15 +127,17 @@ public class MainController {
 		HashMap<String,String> mymap = new HashMap<String,String>();
 		mymap.put("title", "텍스트 요약본");
 		mymap.put("body", text);
+		mymap.put("tempbody", temptext);
 		JSONObject data = new JSONObject(mymap);
 		
 
 		return data;
 	}
 	
-	@PostMapping("/download")
-	public void download(String title, String body, HttpServletResponse response){
+	@GetMapping("/download")
+	public void download(String title, String original, String body, HttpServletResponse response){
 		//System.out.println("body : "+body);
+		body = "1차요약\r\n"+original+"최종요약\r\n" + body;
 		File file = fileService.makePDFFile(title, body);
 		downloadService.downloadResult(title, body, response, file);
 	}

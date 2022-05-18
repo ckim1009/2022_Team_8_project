@@ -24,12 +24,27 @@
 </head>
 
 <script>
+	function upload_callback(res)
+	{
+		var paper_compressed = document.getElementById('paper_compressed');
+		var result_title = document.getElementById('result_title');
+		var result_body = document.getElementById('result_body');
+		var original_body = document.getElementById('original_body');
+		var loading_layer = document.getElementById('loading_layer');
+		
+		console.log(res)
+		result_title.innerText = res.title;
+		result_body.innerText = res.body;
+		original_body.innerText=res.tempbody;
+		loading_layer.style.display = "none";
+		paper_compressed.style.display = 'block';
+	}
+	
+
     function text_upload()
     {
     	var textbody = document.getElementById("textbody").value
-    	var paper_compressed = document.getElementById('paper_compressed');
-		var result_title = document.getElementById('result_title');
-		var result_body = document.getElementById('result_body');
+    	
 		
 		var text_layer = document.getElementById('text_layer');
 		var loading_layer = document.getElementById('loading_layer');
@@ -37,15 +52,12 @@
 		loading_layer.style.display = "block";
 		text_layer.style.display = "none";
     	$.ajax({
-			type : 'POST',
+			type : 'GET',
 			url: "/text_upload",
 			data: {"textbody":textbody},
 			success: function(res){
 
-				result_title.innerText = res.title;
-				result_body.innerText = res.body;
-				loading_layer.style.display = "none";
-				paper_compressed.style.display = 'block';
+				upload_callback(res)
 				
 			},
 			error: function(err){
@@ -100,9 +112,10 @@
 		var paper_compressed = document.getElementById('paper_compressed');
 		var result_title = document.getElementById('result_title');
 		var result_body = document.getElementById('result_body');
+		var original_body = document.getElementById('original_body');
 		
         $.ajax({
-			type : 'POST',
+			type : 'GET',
 			url: "/pdf_upload",
 			data: formData,
 			 dataType: "json",
@@ -112,10 +125,8 @@
 			
 			success: function(res){
 
-				result_title.innerText = res.title;
-				result_body.innerText = res.body;
-				paper_compressed.style.display = 'block';
-				loading_layer.style.display = "none";
+				upload_callback(res)
+				
 			},
 			error: function(err){
 				alert(err)
@@ -129,12 +140,16 @@
 	function download_file()
 	{
 		var result_title = document.getElementById('result_title');
+		var original_body = document.getElementById('original_body');
 		var result_body = document.getElementById('result_body');
+		
 		var down_title = document.getElementById('down_title');
 		var down_body = document.getElementById('down_body');
+		var down_original = document.getElementById('down_original_body');
 		
 		down_title.value=result_title.innerText;
 		down_body.value=result_body.innerText;
+		down_original.value = original_body.innerText
 		
 		$('#download_submit').submit();
 	}
@@ -290,8 +305,9 @@
                 </div>
             </div>
             
-            <form method="post" action="/download" id="download_submit">
+            <form method="get" action="/download" id="download_submit">
            		<input type="hidden" name ="title" id="down_title">
+           		<input type="hidden" name="original" id="down_original_body">
 				<input type="hidden" name="body" id="down_body">
             </form>
             
