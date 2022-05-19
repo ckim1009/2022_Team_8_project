@@ -1,4 +1,5 @@
 server:
+  max-http-header-size: 400000
   port: 5501
   servlet:
     context-path: /

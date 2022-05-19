@@ -25,7 +25,7 @@ public class PythonService {
 		int[] exitvalues = {0,1};
 		String[] command = new String[4];
 		command[0] = "python";
-		command[1] = "python/test.py";
+		command[1] = "python/kobart_beta.py";
 		command[2] = text.getAbsolutePath();
 
 

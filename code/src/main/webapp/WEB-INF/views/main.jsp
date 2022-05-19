@@ -32,10 +32,10 @@
 		var original_body = document.getElementById('original_body');
 		var loading_layer = document.getElementById('loading_layer');
 		
-		console.log(res)
+		
 		result_title.innerText = res.title;
 		result_body.innerText = res.body;
-		original_body.innerText=res.tempbody;
+		original_body.innerText=res.firstbody;
 		loading_layer.style.display = "none";
 		paper_compressed.style.display = 'block';
 	}
@@ -94,7 +94,12 @@
 	
 	function upload_file(uploadfile)
 	{
-
+		if(!uploadfile.name.includes(".pdf"))
+		{
+			alert("pdf형식의 문서만 업로드 가능합니다.")
+			return false;
+		}
+		
 		var loading_layer = document.getElementById('loading_layer');
 		var pdf_layer = document.getElementById('pdf_layer');
 		pdf_layer.style.display = "none";
@@ -103,19 +108,12 @@
 		var formData = new FormData();
 		formData.append("file", uploadfile);
 
-		if(!uploadfile.name.includes(".pdf"))
-		{
-			alert("pdf형식의 문서만 업로드 가능합니다.")
-			return false;
-		}
 		
-		var paper_compressed = document.getElementById('paper_compressed');
-		var result_title = document.getElementById('result_title');
-		var result_body = document.getElementById('result_body');
-		var original_body = document.getElementById('original_body');
+		console.log(uploadfile)
+		console.log(formData)
 		
         $.ajax({
-			type : 'GET',
+			type : 'POST',
 			url: "/pdf_upload",
 			data: formData,
 			 dataType: "json",
@@ -182,6 +180,9 @@
 					</div>
 					<div class="d-flex flex-col justify-content-center align-items-center py-1">
 						<p>아래의 버튼을 통해 선택해주세요</p>
+					</div>
+					<div class="d-flex flex-col justify-content-center align-items-center py-1">
+						<p class="my-0">요약에는 30초 정도 소요됩니다.</p>
 					</div>
 					<div class="d-flex flex-col justify-content-center align-items-center py-1">
 						<button class="col-4 btn btn-primary" onclick="text_layer_open()">텍스트 입력</button>
@@ -268,18 +269,18 @@
 			function text_layer_open(){
 				var first_layer = document.getElementById('first_layer');
 				var text_layer = document.getElementById('text_layer');
-				var paper_compressed_box = document.getElementById('paper_compressed_box');
+				//var paper_compressed_box = document.getElementById('paper_compressed_box');
 				first_layer.style.display = 'none';
 				text_layer.style.display = 'block';
-				paper_compressed_box.style.display = 'block';
+				//paper_compressed_box.style.display = 'block';
 			}
 			function pdf_layer_open(){
 				var first_layer = document.getElementById('first_layer');
 				var pdf_layer = document.getElementById('pdf_layer');
-				var paper_compressed_box = document.getElementById('paper_compressed_box');
+				//var paper_compressed_box = document.getElementById('paper_compressed_box');
 				first_layer.style.display = 'none';
 				pdf_layer.style.display = 'block';
-				paper_compressed_box.style.display = 'block';
+				//paper_compressed_box.style.display = 'block';
 				file_drag_drop()
 			}
 		</script>

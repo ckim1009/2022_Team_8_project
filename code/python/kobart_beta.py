@@ -22,6 +22,7 @@ import nltk
 import json
 import csv
 
+
 class OktTokenizer:
     okt: Okt = Okt()
 
@@ -45,7 +46,7 @@ def runTextRank(inputText, num):
         rank_output = rank_output + sentence
     return rank_output
 
-nltk.download('punkt')
+#nltk.download('punkt') #[nltk_data]   Package punkt is already up-to-date!
 reg_section_name = r'\[.*?\]'
 inc_section_list = ['발명의 명칭', '기술분야', '배경기술', '해결하려는 과제', '과제의 해결 수단', '발명의 효과']
 
@@ -126,19 +127,19 @@ def prep_lex(data):
 def tokenLen(input):
     return len(nltk.word_tokenize(input))
 
-#temp = os.path.isfile(sys.argv[1])
-temp = os.path.isfile('test.txt')
+temp = os.path.isfile(sys.argv[1])
+#temp = os.path.isfile('test.txt')
 if temp :
 
-    #f = open(sys.argv[1],"r", encoding='UTF8')
-    f = open('test.txt',"r", encoding='UTF8')
+    f = open(sys.argv[1],"r", encoding='UTF8')
+    #f = open('test.txt',"r", encoding='UTF8')
     text = f.read();
     
     #필요한 부분만 나눠 추출
     prep_text = prep_lex(text)
 
     #1차 요약
-    textRankLen = 30
+    textRankLen = 10
     while (tokenLen(runTextRank(text, textRankLen)) > 512):
         textRankLen = textRankLen - 1
 
