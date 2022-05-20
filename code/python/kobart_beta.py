@@ -45,7 +45,7 @@ def runTextRank(inputText, num):
         rank_output = rank_output + sentence
     return rank_output
 
-nltk.download('punkt')
+# nltk.download('punkt')
 reg_section_name = r'\[.*?\]'
 inc_section_list = ['발명의 명칭', '기술분야', '배경기술', '해결하려는 과제', '과제의 해결 수단', '발명의 효과']
 
