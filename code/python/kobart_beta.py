@@ -22,7 +22,6 @@ import nltk
 import json
 import csv
 
-
 class OktTokenizer:
     okt: Okt = Okt()
 
@@ -46,7 +45,7 @@ def runTextRank(inputText, num):
         rank_output = rank_output + sentence
     return rank_output
 
-#nltk.download('punkt') #[nltk_data]   Package punkt is already up-to-date!
+nltk.download('punkt')
 reg_section_name = r'\[.*?\]'
 inc_section_list = ['발명의 명칭', '기술분야', '배경기술', '해결하려는 과제', '과제의 해결 수단', '발명의 효과']
 
@@ -127,40 +126,46 @@ def prep_lex(data):
 def tokenLen(input):
     return len(nltk.word_tokenize(input))
 
-temp = os.path.isfile(sys.argv[1])
-#temp = os.path.isfile('test.txt')
+#temp = os.path.isfile(sys.argv[1])
+temp = os.path.isfile('test.txt')
 if temp :
 
-    f = open(sys.argv[1],"r", encoding='UTF8')
-    #f = open('test.txt',"r", encoding='UTF8')
+    #f = open(sys.argv[1],"r", encoding='UTF8')
+    f = open('blank.txt',"r", encoding='UTF8')
     text = f.read();
-    
-    #필요한 부분만 나눠 추출
-    prep_text = prep_lex(text)
 
-    #1차 요약
-    textRankLen = 10
-    while (tokenLen(runTextRank(text, textRankLen)) > 512):
-        textRankLen = textRankLen - 1
+    #텍스트가 빈값이면 종료
+    if not text :
+      print("파일이 없습니다.\n파일이 없습니다.")
+      exit()
 
-    first_output = runTextRank(text, textRankLen)
+    else:
+      #필요한 부분만 나눠 추출
+      prep_text = prep_lex(text)
 
-    #KOBART 결과
-    tokenizer = PreTrainedTokenizerFast.from_pretrained('digit82/kobart-summarization')
-    model = BartForConditionalGeneration.from_pretrained('digit82/kobart-summarization')
+      #1차 요약
+      textRankLen = 30
+      while (tokenLen(runTextRank(text, textRankLen)) > 512):
+          textRankLen = textRankLen - 1
 
-    first_output  = first_output .replace('\n', ' ')
+      first_output = runTextRank(text, textRankLen)
 
-    raw_input_ids = tokenizer.encode(first_output )
-    input_ids = [tokenizer.bos_token_id] + raw_input_ids + [tokenizer.eos_token_id]
+      #KOBART 결과
+      tokenizer = PreTrainedTokenizerFast.from_pretrained('digit82/kobart-summarization')
+      model = BartForConditionalGeneration.from_pretrained('digit82/kobart-summarization')
 
-    summary_ids = model.generate(torch.tensor([input_ids]),  num_beams=4,  max_length=512,  eos_token_id=1)
-    KOBART_result = tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)
-    result = first_output +'\n' + KOBART_result
-    print(result);
-    f.close();
+      first_output  = first_output.replace('\n', ' ')
+
+      raw_input_ids = tokenizer.encode(first_output)
+      input_ids = [tokenizer.bos_token_id] + raw_input_ids + [tokenizer.eos_token_id]
+
+      summary_ids = model.generate(torch.tensor([input_ids]),  num_beams=4,  max_length=512,  eos_token_id=1)
+      KOBART_result = tokenizer.decode(summary_ids.squeeze().tolist(), skip_special_tokens=True)
+      result = first_output +'\n' + KOBART_result
+      print(result);
+      f.close();
 else : 
-    print("파일이 없습니다.")
+    print("파일이 없습니다.\n파일이 없습니다.")
 
 exit();
 

@@ -31,8 +31,8 @@
 		var result_body = document.getElementById('result_body');
 		var original_body = document.getElementById('original_body');
 		var loading_layer = document.getElementById('loading_layer');
-		
-		
+		var body_color = document.getElementById('Body');
+		body_color.style.backgroundColor = "#f1f3f5";
 		result_title.innerText = res.title;
 		result_body.innerText = res.body;
 		original_body.innerText=res.firstbody;
@@ -48,15 +48,17 @@
 		
 		var text_layer = document.getElementById('text_layer');
 		var loading_layer = document.getElementById('loading_layer');
+		var body_color = document.getElementById('Body');
 
 		loading_layer.style.display = "block";
+		body_color.style.backgroundColor = "white";
 		text_layer.style.display = "none";
     	$.ajax({
 			type : 'GET',
 			url: "/text_upload",
 			data: {"textbody":textbody},
 			success: function(res){
-
+				
 				upload_callback(res)
 				
 			},
@@ -102,9 +104,11 @@
 		
 		var loading_layer = document.getElementById('loading_layer');
 		var pdf_layer = document.getElementById('pdf_layer');
+		var body_color = document.getElementById('Body');
 		pdf_layer.style.display = "none";
 		loading_layer.style.display = "block";
-		
+		body_color.style.backgroundColor = "white";
+
 		var formData = new FormData();
 		formData.append("file", uploadfile);
 
@@ -154,7 +158,7 @@
 	
 </script>
 
-<body>
+<body id="Body">
 
     <div class="container-fluid px-0">
         <div class="row d-flex justify-content-center" style="background-color: white;">
@@ -181,16 +185,16 @@
 					<div class="d-flex flex-col justify-content-center align-items-center py-1">
 						<p>아래의 버튼을 통해 선택해주세요</p>
 					</div>
-					<div class="d-flex flex-col justify-content-center align-items-center py-1">
-						<p class="my-0">요약에는 30초 정도 소요됩니다.</p>
-					</div>
+					
 					<div class="d-flex flex-col justify-content-center align-items-center py-1">
 						<button class="col-4 btn btn-primary" onclick="text_layer_open()">텍스트 입력</button>
 					</div>
 					<div class="d-flex flex-col justify-content-center align-items-center py-1">
 						<button class="col-4 btn btn-primary" onclick="pdf_layer_open()">PDF 파일</button>
 					</div>
-					
+					<div class="d-flex flex-col justify-content-center align-items-center py-1">
+						<p class="my-0">요약에는 30초 정도 소요됩니다.</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -260,6 +264,9 @@
 			<div class="my-5">
 				<div class="col-8 col-md-6 col-lg-4 mx-auto">
 					<img style="width:100%" src="/img/loading.gif" alt="loading..." >
+					<div class="d-flex flex-col justify-content-center align-items-center py-1">
+						<p class="my-0">요약에는 30초 정도 소요됩니다.</p>
+					</div>
 				</div>
 			</div>
 			
